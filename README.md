@@ -62,7 +62,15 @@ assets/music.mp3
 ## 专属链接格式
 
 ```text
-https://你的用户名.github.io/你的仓库名/?mode=share&name=妈妈&msg=母亲节快乐&from=爱您的孩子
+https://你的用户名.github.io/你的仓库名/?p=eyJuIjoi5aaI5aaIIiwibSI6Iua¯jeS6s-iKgui_k-S5kCIsImYiOiLniLHmgqjnmoTlrZDlraYifQ
 ```
 
 也可以在页面里填写内容后，点击“生成专属链接”，自动生成并复制到微信。
+
+## 短链接说明
+
+新版生成的专属链接会使用 `?p=...` 格式，把妈妈称呼、祝福语、落款打包到一个参数里。
+
+旧版长链接仍然兼容：`?name=妈妈&msg=母亲节快乐&from=爱您的孩子`，但中文会被浏览器自动编码，所以看起来会很长。
+
+如果想要极短链接，例如 `https://xxx.com/520`，需要服务器、数据库，或使用第三方短链接服务；纯 GitHub Pages 静态网页无法把任意祝福内容保存到服务器。

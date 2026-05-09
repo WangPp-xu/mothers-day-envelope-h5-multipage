@@ -37,8 +37,32 @@ const petalLayer = $('petalLayer');
 const confettiLayer = $('confettiLayer');
 
 const params = new URLSearchParams(window.location.search);
-const hasShareParams = params.has('mode') || params.has('name') || params.has('msg') || params.has('from');
+const packedParam = params.get('p');
+const hasShareParams = params.has('p') || params.has('mode') || params.has('name') || params.has('msg') || params.has('from');
 const isShareMode = params.get('mode') === 'share' || hasShareParams;
+
+// 把中文祝福语压缩到一个 p 参数里。
+// 这样比 ?name=...&msg=...&from=... 这种中文百分号编码链接短很多。
+function encodeShareData(data) {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach((b) => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function decodeShareData(value) {
+  if (!value) return null;
+  try {
+    let base64 = value.replace(/-/g, '+').replace(/_/g, '/');
+    base64 += '='.repeat((4 - base64.length % 4) % 4);
+    const binary = atob(base64);
+    const bytes = Uint8Array.from(binary, (ch) => ch.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch (e) {
+    return null;
+  }
+}
 
 const defaultName = '妈妈';
 const defaultMsg = `母亲节快乐！
@@ -89,9 +113,18 @@ function initState() {
 
   if (isShareMode) {
     document.body.classList.add('share-mode');
-    state.name = decodeParam('name', defaultName);
-    state.msg = decodeParam('msg', defaultMsg);
-    state.from = decodeParam('from', defaultFrom);
+
+    const packed = decodeShareData(packedParam);
+    if (packed) {
+      state.name = packed.n || defaultName;
+      state.msg = packed.m || defaultMsg;
+      state.from = packed.f || defaultFrom;
+    } else {
+      // 兼容旧版长链接：?name=妈妈&msg=祝福语&from=落款
+      state.name = decodeParam('name', defaultName);
+      state.msg = decodeParam('msg', defaultMsg);
+      state.from = decodeParam('from', defaultFrom);
+    }
   } else {
     state.name = localStorage.getItem('mom_card_name') || defaultName;
     state.msg = localStorage.getItem('mom_card_msg') || defaultMsg;
@@ -259,13 +292,18 @@ function makeShareLink() {
   applyContent();
   const url = new URL(window.location.href);
   url.search = '';
-  url.searchParams.set('mode', 'share');
-  url.searchParams.set('name', state.name);
-  url.searchParams.set('msg', state.msg);
-  url.searchParams.set('from', state.from);
+
+  // 新版短链接：把 name/msg/from 打包成一个 p 参数
+  const packed = encodeShareData({
+    n: state.name,
+    m: state.msg,
+    f: state.from
+  });
+  url.searchParams.set('p', packed);
+
   shareLink.value = url.toString();
   shareBox.style.display = 'block';
-  showToast('专属链接已生成');
+  showToast('短版专属链接已生成');
   shareBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
