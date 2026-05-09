@@ -1,0 +1,2 @@
+如果你需要背景音乐，请把自己的 mp3 文件命名为 music.mp3，并放到 assets 文件夹中。
+最终路径应该是：assets/music.mp3

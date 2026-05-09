@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#ffc1d8" />
+  <title>母亲节快乐｜给妈妈的一封信</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button class="music-btn" id="musicBtn" aria-label="播放或暂停音乐">♫</button>
+
+  <div class="petal-layer" id="petalLayer"></div>
+  <div class="heart-layer" id="heartLayer"></div>
+  <div class="confetti-layer" id="confettiLayer"></div>
+
+  <main class="app">
+    <header class="top-title">
+      <div class="doodle-badge">LOVE YOU MOM</div>
+      <h1 class="hand-title" id="pageTitle">母亲节快乐</h1>
+      <p class="subtitle">一份会翻页、会开信封、会出现祝福的小惊喜</p>
+    </header>
+
+    <section class="creator-panel editor-only" id="creatorPanel">
+      <div class="panel-title">先生成你的专属祝福</div>
+
+      <label for="nameInput">妈妈称呼</label>
+      <input id="nameInput" type="text" placeholder="例如：妈妈 / 妈咪 / 最爱的妈妈" />
+
+      <label for="msgInput">想写的话</label>
+      <textarea id="msgInput" placeholder="输入你想写给妈妈的话"></textarea>
+
+      <label for="fromInput">落款</label>
+      <input id="fromInput" type="text" placeholder="例如：爱您的女儿 / 您的孩子" />
+
+      <div class="button-row">
+        <button class="pink-btn" id="applyBtn">生成贺卡</button>
+        <button class="white-btn" id="makeLinkBtn">生成专属链接</button>
+      </div>
+    </section>
+
+    <nav class="page-dots" id="pageDots" aria-label="页面进度"></nav>
+
+    <section class="phone-frame">
+      <div class="screen-track" id="screenTrack">
+        <!-- 第 1 页：开场封面 -->
+        <section class="screen cover-screen active" data-title="母亲节快乐">
+          <div class="cover-cloud">♡</div>
+          <div class="cover-stickers">
+            <span>🌹</span><span>✨</span><span>💗</span><span>🌸</span>
+          </div>
+          <div class="big-graffiti">妈妈<br />节日快乐</div>
+          <p class="cover-text">这是一份藏在信封里的小小心意，点下一页慢慢打开。</p>
+          <button class="start-btn" id="startBtn">开启惊喜</button>
+        </section>
+
+        <!-- 第 2 页：祝福卡片 -->
+        <section class="screen cards-screen" data-title="给妈妈的三句话">
+          <div class="section-title">给妈妈的三句话</div>
+          <div class="wish-card rotate-left">
+            <span class="wish-icon">🌷</span>
+            <div>
+              <h3>谢谢您的陪伴</h3>
+              <p>从小到大，您一直把最好的爱给了我。</p>
+            </div>
+          </div>
+          <div class="wish-card rotate-right">
+            <span class="wish-icon">💌</span>
+            <div>
+              <h3>愿您每天开心</h3>
+              <p>希望您少一点辛苦，多一点快乐和轻松。</p>
+            </div>
+          </div>
+          <div class="wish-card rotate-left small-delay">
+            <span class="wish-icon">💖</span>
+            <div>
+              <h3>我会一直爱您</h3>
+              <p>这份爱会一直在，也会越来越懂得表达。</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 第 3 页：贴纸回忆墙 -->
+        <section class="screen album-screen" data-title="回忆贴纸墙">
+          <div class="section-title">回忆贴纸墙</div>
+          <div class="album-grid">
+            <div class="photo-card tall">
+              <div class="photo-icon">👩‍👧</div>
+              <p>小时候的照顾</p>
+            </div>
+            <div class="photo-card">
+              <div class="photo-icon">🍲</div>
+              <p>热乎乎的饭菜</p>
+            </div>
+            <div class="photo-card">
+              <div class="photo-icon">☂️</div>
+              <p>风雨里的守护</p>
+            </div>
+            <div class="photo-card wide">
+              <div class="photo-icon">🏠</div>
+              <p>有妈妈在，就是家</p>
+            </div>
+          </div>
+          <div class="tape tape-a">MOM</div>
+          <div class="tape tape-b">FOREVER YOUNG</div>
+        </section>
+
+        <!-- 第 4 页：信封 -->
+        <section class="screen envelope-screen" data-title="打开信封">
+          <div class="section-title">打开白色信封</div>
+          <p class="screen-tip">点击信封，信纸会慢慢升起，文字会一行一行出现。</p>
+
+          <section class="scene" aria-label="母亲节信封贺卡">
+            <div class="letter-paper" id="letterPaper">
+              <div class="paper-pin">LOVE YOU MOM</div>
+              <div class="letter-to" id="letterTo">To 我最亲爱的妈妈：</div>
+              <div class="type-area" id="typeArea"></div>
+              <div class="letter-footer">
+                <span id="letterFrom">爱您的我</span>
+                <span id="letterDate"></span>
+              </div>
+            </div>
+
+            <div class="envelope-wrap" id="envelopeWrap">
+              <div class="fly-shadow"></div>
+              <div class="flap" id="flap"></div>
+              <div class="envelope-body"></div>
+              <div class="seal" id="seal">❤</div>
+              <div class="open-tip" id="openTip">点我打开</div>
+            </div>
+          </section>
+        </section>
+
+        <!-- 第 5 页：最终祝福 -->
+        <section class="screen final-screen" data-title="最终祝福">
+          <div class="final-heart">❤</div>
+          <div class="section-title">愿妈妈永远幸福</div>
+          <div class="final-card">
+            <div class="final-to" id="finalTo">To 妈妈</div>
+            <div class="final-message" id="finalMessage"></div>
+            <div class="final-sign">
+              <span id="finalFrom">爱您的我</span>
+              <span id="finalDate"></span>
+            </div>
+          </div>
+          <div class="final-actions">
+            <button class="pink-btn" id="copyBlessingBtn">复制祝福语</button>
+            <button class="white-btn" id="restartBtn">再看一遍</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button class="white-btn" id="prevBtn">上一页</button>
+      <button class="pink-btn" id="nextBtn">下一页</button>
+    </div>
+
+    <section class="share-box editor-only" id="shareBox">
+      <div class="share-title">你的专属链接</div>
+      <textarea id="shareLink" readonly></textarea>
+      <button class="pink-btn full" id="copyLinkBtn">复制链接发到微信</button>
+      <p class="share-note">别人点开专属链接后，只会看到多页动画贺卡，不会显示上方编辑框。</p>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">已复制</div>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
